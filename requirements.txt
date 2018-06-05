@@ -1,0 +1,5 @@
+tmux==2.7
+zsh==5.5.1
+zim==git-commit@4b0a6f9
+vim==8.0
+emacs==26.1
