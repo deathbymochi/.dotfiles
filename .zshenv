@@ -1,1 +1,1 @@
-/Users/tiffanyhu/.zshenv
+source ${HOME}/.env

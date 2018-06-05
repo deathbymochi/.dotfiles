@@ -1,1 +1,3 @@
-/Users/tiffanyhu/.bash_profile
+if [ -f ~/.env ] then
+	. ~/.env
+fi;
