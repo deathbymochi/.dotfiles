@@ -1,3 +1,4 @@
-if [ -f ~/.env ] then
+if [ -f ~/.env ] 
+then
 	. ~/.env
-fi;
+fi
