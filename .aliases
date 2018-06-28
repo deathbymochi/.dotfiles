@@ -1,1 +1,6 @@
 alias emacs="/usr/local/Cellar/emacs/26.1_1/bin/emacs"
+
+# Use jumphost when using SSH, but save a reference to plain old
+# ssh before doing so.
+alias ossh='/usr/local/bin/ssh'
+alias ssh='ssh -J bastion.tptpm.info'
