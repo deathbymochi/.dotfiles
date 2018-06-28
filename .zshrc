@@ -1,14 +1,18 @@
-#
-# User configuration sourced by interactive shells
-#
 
 # Change default zim location
 export ZIM_HOME=${ZDOTDIR:-${HOME}}/.zim
 
 # Start zim
 [[ -s ${ZIM_HOME}/init.zsh ]] && source ${ZIM_HOME}/init.zsh
+
 # User configuration sourced by interactive shells
 #
+
+# Setup virtualenvwrapper to work correctly
+export VIRTUALENVWRAPPER_PYTHON=/usr/local/bin/python3
+export WORKON_HOME=$HOME/.virtualenvs
+export PROJECT_HOME=$HOME/PythonDevel
+source /usr/local/bin/virtualenvwrapper.sh
 
 # Aliases - use ~/.aliases file
 source ${HOME}/.aliases
