@@ -96,9 +96,59 @@
 	("C-x r b" . 'helm-filtered-bookmarks)
 	("C-x C-b" . 'helm-buffers-list))
 
+;; elpy ()
+;; emacs IDE for python
+(use-package elpy
+	:init
+    (elpy-enable)
+    :bind
+    ("C-c g" . 'elpy-goto-definition))
+
+
+;; sql-indent (1.2)
+;; basic automatic sql indentation
+(use-package sql-indent
+    :ensure t
+    :pin gnu
+	:config
+
+    ;; Custom rules for sql-indent
+    (defvar my-sql-indentation-offsets-alist
+      `( ;; put new syntactic symbols here, and add the default ones at the end.
+         ;; If there is no value specified for a syntactic symbol, the default
+         ;; will be picked up.
+        (select-clause 0)
+        (select-table-continuation +)
+        ,@sqlind-default-indentation-offsets-alist))
+
+    ;; Arrange for the new indentation offset to be set up for each SQL buffer.
+    (add-hook 'sqlind-minor-mode-hook
+              (lambda ()
+                (setq sqlind-indentation-offsets-alist
+                      my-sql-indentation-offsets-alist)))
+
+    (add-hook 'sql-mode-hook 'sqlind-minor-mode))
+
+;; sql-upmode ()
+;; basic automatic sql upper casing
+(use-package sqlup-mode
+	:config
+    (add-hook 'sql-mode-hook 'sqlup-mode))
+
+;; evil-vimish-fold ()
+;; use standard vim zf and zd bindings to fold / unfold
+(use-package evil-vimish-fold
+	:init
+    (evil-vimish-fold-mode 1))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; display config
 ;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;; solarized-dark (https://github.com/sellout/emacs-color-theme-solarized)
-(load-theme 'solarized t)
+(use-package color-theme-solarized
+  :init
+  (load-theme 'solarized t)
+  (setq frame-background-mode 'dark)
+  (set-terminal-parameter nil 'background-mode 'dark)
+  (enable-theme 'solarized))
