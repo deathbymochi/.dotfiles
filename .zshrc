@@ -95,3 +95,16 @@ zle -N zle-keymap-select
 
 # Make Vi mode transitions faster (KEYTIMEOUT is in hundredths of a second)
 export KEYTIMEOUT=1
+
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f '/Users/tiffanyhu/Downloads/google-cloud-sdk/path.zsh.inc' ]; then source '/Users/tiffanyhu/Downloads/google-cloud-sdk/path.zsh.inc'; fi
+
+# The next line enables shell command completion for gcloud.
+if [ -f '/Users/tiffanyhu/Downloads/google-cloud-sdk/completion.zsh.inc' ]; then source '/Users/tiffanyhu/Downloads/google-cloud-sdk/completion.zsh.inc'; fi
+
+# The next line enables shell command completion for kubectl (kubernetes)
+if [ /usr/local/bin/kubectl ]; then source <(kubectl completion zsh); fi
+
+# asdf config
+. $HOME/.asdf/asdf.sh
+. $HOME/.asdf/completions/asdf.bash
