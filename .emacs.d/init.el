@@ -3,9 +3,10 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(evil-collection-setup-minibuffer nil)
  '(package-selected-packages
    (quote
-    (color-theme-solarized evil-collection evil use-package helm))))
+    (markdown-mode evil-vimish-fold yaml-mode jinja2-mode sqlup-mode sql-indent elpy color-theme-solarized evil-collection evil use-package helm))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -32,6 +33,13 @@
 
 ;; modes
 (electric-indent-mode 0)
+
+;; whitespace
+;;  - add newline to end of file
+(setq require-final-newline t)
+
+;;  - delete trailing whitespace
+(add-hook 'before-save-hook 'delete-trailing-whitespace)
 
 ;; package manager
 (require 'package)
@@ -62,7 +70,7 @@
 (use-package evil
 	:init
 	(setq evil-want-integration nil)
-	:config	
+	:config
 	(evil-mode 1))
 
 ;; evil-collection (20180604.1813)
