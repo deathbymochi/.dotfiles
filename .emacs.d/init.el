@@ -6,7 +6,7 @@
  '(evil-collection-setup-minibuffer nil)
  '(package-selected-packages
    (quote
-    (markdown-mode evil-vimish-fold yaml-mode jinja2-mode sqlup-mode sql-indent elpy color-theme-solarized evil-collection evil use-package helm))))
+    (protobuf-mode hydra markdown-mode evil-vimish-fold yaml-mode jinja2-mode sqlup-mode sql-indent elpy color-theme-solarized evil-collection evil use-package helm))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -53,6 +53,9 @@
 (setq package-enable-at-startup nil)
 (package-initialize)
 
+;; local custom elisp files (function defs, etc)
+(add-to-list 'load-path "~/.emacs.d/my-custom")
+
 ;;;;;;;;;;;;;;;;;;
 ;; packages
 ;;;;;;;;;;;;;;;;;;
@@ -66,7 +69,7 @@
 
 ;; evil-mode (https://github.com/emacs-evil/evil)
 ;; vim bindings in emacs
-(add-to-list 'load-path "~/.emacs.d/evil")
+;; (add-to-list 'load-path "~/.emacs.d/evil")
 (use-package evil
 	:init
 	(setq evil-want-integration nil)
@@ -140,6 +143,12 @@
 (use-package evil-vimish-fold
 	:init
     (evil-vimish-fold-mode 1))
+
+;; hydra (0.15.0)
+;; use hydra package to help manage emacs key bindings
+(use-package hydra
+    :config
+    (load "my-hydras"))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; display config
