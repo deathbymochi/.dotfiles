@@ -72,6 +72,7 @@
 ;; (add-to-list 'load-path "~/.emacs.d/evil")
 (use-package evil
 	:init
+    (setq evil-want-keybinding nil)
 	(setq evil-want-integration nil)
 	:config
 	(evil-mode 1))
