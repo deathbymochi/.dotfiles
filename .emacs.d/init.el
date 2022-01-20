@@ -4,9 +4,9 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(evil-collection-setup-minibuffer nil)
+ '(helm-minibuffer-history-key "M-p")
  '(package-selected-packages
-   (quote
-    (protobuf-mode hydra markdown-mode evil-vimish-fold yaml-mode jinja2-mode sqlup-mode sql-indent elpy color-theme-solarized evil-collection evil use-package helm))))
+   '(company-capf color-theme-solarized lsp-ui lsp-metals lsp-mode flycheck sbt-mode scala-mode protobuf-mode hydra markdown-mode evil-vimish-fold yaml-mode jinja2-mode sqlup-mode sql-indent elpy evil-collection evil use-package helm)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -19,8 +19,7 @@
 ;; global variables
 (setq
  inhibit-startup-screen t
- column-number-mode t
- use-package-always-ensure t)
+ column-number-mode t)
 
 ;; use y or n whenever yes or no is required
 (fset 'yes-or-no-p 'y-or-n-p)
@@ -42,16 +41,32 @@
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 
 ;; package manager
-(require 'package)
-(setq
- package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
-                    ("org" . "http://orgmode.org/elpa/")
-                    ("melpa" . "http://melpa.org/packages/")
-                    ("melpa-stable" . "http://stable.melpa.org/packages/"))
- package-archive-priorities '(("melpa-stable" . 1)))
+;; (require 'package)
+;; (setq
+;;  package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
+;;                     ("org" . "http://orgmode.org/elpa/")
+;;                     ("melpa" . "http://melpa.org/packages/")
+;;                     ("melpa-stable" . "http://stable.melpa.org/packages/"))
+;;  package-archive-priorities '(("melpa-stable" . 1)))
+;; 
+;; (setq package-enable-at-startup nil)
+;; (package-initialize)
 
+;; improved package manager - straight.el
+;; note: remove all usages of 'package
+(defvar bootstrap-version)
+(let ((bootstrap-file
+       (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
+      (bootstrap-version 5))
+  (unless (file-exists-p bootstrap-file)
+    (with-current-buffer
+        (url-retrieve-synchronously
+         "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
+         'silent 'inhibit-cookies)
+      (goto-char (point-max))
+      (eval-print-last-sexp)))
+  (load bootstrap-file nil 'nomessage))
 (setq package-enable-at-startup nil)
-(package-initialize)
 
 ;; local custom elisp files (function defs, etc)
 (add-to-list 'load-path "~/.emacs.d/my-custom")
@@ -67,10 +82,9 @@
   (package-install 'use-package))
 (require 'use-package)
 
-;; Enable defer and ensure by default for use-package
+;; Enable defer default for use-package
 ;; Keep auto-save/backup files separate from source code:  https://github.com/scalameta/metals/issues/1027
 (setq use-package-always-defer t
-      use-package-always-ensure t
       backup-directory-alist `((".*" . ,temporary-file-directory))
       auto-save-file-name-transforms `((".*" ,temporary-file-directory t)))
 
@@ -119,7 +133,6 @@
 ;; sql-indent (1.2)
 ;; basic automatic sql indentation
 (use-package sql-indent
-    :ensure t
     :pin gnu
 	:config
 
@@ -200,8 +213,11 @@
 ;;   to avoid odd behavior with snippets and indentation
 (use-package yasnippet)
 
-;; Add company-lsp backend for metals
-(use-package company-lsp)
+;; Add company-capf backend for metals
+(use-package company
+  :hook (scala-mode . company-mode)
+  :config (setq lsp-completion-provider :capf)
+)
 
 ;; Use the Debug Adapter Protocol for running tests and debugging
 (use-package posframe
@@ -219,9 +235,16 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;; solarized-dark (https://github.com/sellout/emacs-color-theme-solarized)
+(straight-use-package 'color-theme-solarized)
 (use-package color-theme-solarized
   :init
   (load-theme 'solarized t)
   (setq frame-background-mode 'dark)
   (set-terminal-parameter nil 'background-mode 'dark)
   (enable-theme 'solarized))
+
+;; solarized-dark (https://github.com/bbatsov/solarized-emacs) 
+;; note - doesn't work that well with terminal emulators
+;; (use-package solarized-theme
+;;    :init (load-theme 'solarized-dark t)
+;; )
